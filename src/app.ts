@@ -1,10 +1,13 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import env from "./config/env";
+import authRouter from "./modules/auth/auth.route";
 
 const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/auth", authRouter);
 
 app.get("/", (_req: Request, res: Response) => {
   res.status(200).json({

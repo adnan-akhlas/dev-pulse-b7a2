@@ -4,9 +4,10 @@ import { env as processEnv } from "node:process";
 dotenv.config({ quiet: true });
 
 const env = {
-  port: processEnv.PORT,
+  port: Number(processEnv.PORT),
   database_url: processEnv.DATABASE_URL,
   environment: processEnv.NODE_ENV,
+  bcrypt_salt: Number(processEnv.BCRYPT_SALT),
 };
 
 export default env;
