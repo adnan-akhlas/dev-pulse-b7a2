@@ -1,0 +1,68 @@
+# ==========================================
+# Dependencies & Build Outputs
+# ==========================================
+node_modules/
+/dist
+/build
+/out
+/.next/
+/bin
+/obj
+
+# ==========================================
+# Environment Variables & Secrets (CRITICAL)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+certs/
+
+# ==========================================
+# Editor & IDE Specific
+# ==========================================
+# Zed
+/.zed
+/zed-extensions
+
+# Helix
+/.helix
+
+# Cursor / VS Code
+.vscode/*
+!.vscode/extensions.json
+.history/
+
+# JetBrains (WebStorm, GoLand, etc.)
+.idea/
+
+# ==========================================
+# System Files
+# ==========================================
+# Linux
+.directory
+.fuse_hidden*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ==========================================
+# Tools & Diagnostics
+# ==========================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.turbo/
+.eslintcache
+.prettiercache
