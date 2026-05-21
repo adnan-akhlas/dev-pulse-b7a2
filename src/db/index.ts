@@ -5,10 +5,10 @@ const createUsersTable = async () => {
   return await query(`
     CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
+        name VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
         password TEXT NOT NULL,
-        role TEXT DEFAULT 'contributor',
+        role VARCHAR(20) DEFAULT 'contributor',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -23,14 +23,15 @@ const createIssuesTable = async () => {
         id SERIAL PRIMARY KEY,
         title VARCHAR(150) NOT NULL,
         description TEXT NOT NULL,
-        type TEXT NOT NULL,
-        status TEXT DEFAULT 'open',
-        reported_id INT REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(20) NOT NULL,
+        status VARCHAR(15) DEFAULT 'open',
+        reporter_id INT REFERENCES users(id) ON DELETE CASCADE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
         CONSTRAINT check_issue_type CHECK(type IN ('bug', 'feature_request')),
-        CONSTRAINT check_status_type CHECK(status IN ('open', 'in_progress', 'resolved'))
+        CONSTRAINT check_status_type CHECK(status IN ('open', 'in_progress', 'resolved')),
+        CONSTRAINT check_description_length CHECK(LENGTH(description) >= 20)
       );
     `);
 };
