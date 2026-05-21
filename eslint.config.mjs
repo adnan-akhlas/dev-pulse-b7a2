@@ -10,8 +10,14 @@ export default defineConfig(
   { files: ["src/**/*.ts"] },
   {
     rules: {
-      "no-unused-vars": "warn",
-      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+      "@typescript-eslint/no-explicit-any": ["error"],
       "no-console": "warn",
     },
   },

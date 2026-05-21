@@ -1,0 +1,16 @@
+services:
+  dev-pulse-db:
+    image: postgres:17-alpine
+    container_name: postgres_db_dev_pulse
+    restart: always
+    environment:
+      POSTGRES_USER: dev-pulse
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: dev_pulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

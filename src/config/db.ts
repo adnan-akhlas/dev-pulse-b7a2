@@ -7,7 +7,7 @@ const pool = new Pool({
   connectionString,
 });
 
-const query = (query: string, params: Array<string | number>) =>
+const query = (query: string, params?: Array<string | number>) =>
   pool.query(query, params);
 
 export default query;
