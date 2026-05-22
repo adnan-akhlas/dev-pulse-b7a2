@@ -8,6 +8,8 @@ const env = {
   database_url: processEnv.DATABASE_URL,
   environment: processEnv.NODE_ENV,
   bcrypt_salt: Number(processEnv.BCRYPT_SALT),
+  jwt_access_secret: processEnv.JWT_ACCESS_SECRET,
+  jwt_refresh_secret: processEnv.JWT_REFRESH_SECRET,
 };
 
 export default env;

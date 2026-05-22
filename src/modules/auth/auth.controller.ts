@@ -13,3 +13,14 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
     data: data,
   });
 });
+
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  const body = req.body;
+  const { accessToken, user } = await authService.loginUser(body);
+  sendResponse(res, {
+    status: 201,
+    success: true,
+    message: "User login successfully.",
+    data: { accessToken, user },
+  });
+});

@@ -1,4 +1,4 @@
-interface IUserInfo {
+export interface IUser {
   id: number;
   name: string;
   email: string;
@@ -8,9 +8,10 @@ interface IUserInfo {
   updated_at: string;
 }
 
-export type TUserInput = Pick<
-  IUserInfo,
-  "name" | "email" | "password" | "role"
->;
+export type TUserRegister = Pick<IUser, "name" | "email" | "password" | "role">;
 
-export type TUserResponse = Omit<IUserInfo, "password">;
+export type TUserResponse = Omit<IUser, "password">;
+
+export type TUserLogin = Pick<IUser, "email" | "password">;
+
+export type TUserJwt = Pick<IUser, "email" | "role">;
