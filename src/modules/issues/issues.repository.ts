@@ -57,10 +57,7 @@ export const selectIssuesFromDb = async (filters: IIssuesFilters) => {
   const userRes = await query(userSql, uniqueReporterIds);
   const reporters = userRes.rows;
 
-  const reporterMap = new Map<
-    number,
-    { id: number; name: string; role: string }
-  >();
+  const reporterMap = new Map();
   reporters.forEach((user) => {
     reporterMap.set(user.id, user);
   });
@@ -73,6 +70,29 @@ export const selectIssuesFromDb = async (filters: IIssuesFilters) => {
       reporter: reporterMap.get(reporter_id) || null,
     };
   });
+
+  return stitchedIssues;
+};
+
+export const selectIssueFromDb = async (id: number) => {
+  const sql = `SELECT * FROM issues WHERE id=$1`;
+
+  const res = await query(sql, [id]);
+  const rawIssues = res.rows;
+
+  if (rawIssues.length === 0) {
+    return null;
+  }
+
+  const issues = { ...res.rows[0] };
+
+  const userSql = `SELECT id, name, role FROM users WHERE id=$1;`;
+
+  const userRes = await query(userSql, [issues.reporter_id]);
+  const user = userRes.rows[0];
+
+  delete issues.reporter_id;
+  const stitchedIssues = { ...issues, reporter: user };
 
   return stitchedIssues;
 };
