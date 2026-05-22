@@ -1,5 +1,7 @@
+import createHttpError from "http-errors";
 import query from "../../config/db";
 import { IIssuesFilters, TIssueRegister } from "./issues.types";
+import status from "http-status";
 
 export const insertIssueIntoDb = async (issueInfo: TIssueRegister) => {
   const { title, description, type, reporter_id } = issueInfo;
@@ -78,10 +80,13 @@ export const selectIssueFromDb = async (id: number) => {
   const sql = `SELECT * FROM issues WHERE id=$1`;
 
   const res = await query(sql, [id]);
-  const rawIssues = res.rows;
+  const rawIssue = res.rows;
 
-  if (rawIssues.length === 0) {
-    return null;
+  if (rawIssue.length === 0) {
+    throw createHttpError(
+      status.NOT_FOUND,
+      "The requested issue could not be found.",
+    );
   }
 
   const issues = { ...res.rows[0] };

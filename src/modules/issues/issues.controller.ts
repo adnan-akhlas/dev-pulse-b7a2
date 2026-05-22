@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
+import status from "http-status";
 import asyncHandler from "../../utils/asyncHandler.util";
 import { sendResponse } from "../../utils/sendResponse.util";
-import status from "http-status";
-import * as issueService from "./issues.service";
 import { IUser } from "../users/users.types";
+import * as issueService from "./issues.service";
 
 export const createIssue = asyncHandler(async (req: Request, res: Response) => {
   const body = req.body;
@@ -25,6 +25,17 @@ export const getIssues = asyncHandler(async (req: Request, res: Response) => {
     status: status.OK,
     success: true,
     message: "Issues retrieved successfully.",
+    data,
+  });
+});
+
+export const getIssue = asyncHandler(async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const data = await issueService.getIssue(id);
+  sendResponse(res, {
+    status: status.OK,
+    success: true,
+    message: "Issue retrieved successfully.",
     data,
   });
 });

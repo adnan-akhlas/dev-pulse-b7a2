@@ -12,5 +12,6 @@ issuesRouter.post(
 );
 
 issuesRouter.get("/", issueController.getIssues);
+issuesRouter.get("/:id", issueController.getIssue);
 
 export default issuesRouter;

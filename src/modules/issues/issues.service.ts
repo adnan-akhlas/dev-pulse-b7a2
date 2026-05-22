@@ -6,13 +6,18 @@ export const registerIssue = async (payload: TIssueRegister) => {
   return data;
 };
 
-export const getIssues = async (queryParams: IIssuesQueries) => {
+export const getIssues = async (queries: IIssuesQueries) => {
   const filters = {
-    sort: queryParams.sort || "newest",
-    type: queryParams.type || undefined,
-    status: queryParams.status || undefined,
+    sort: queries.sort || "newest",
+    type: queries.type || undefined,
+    status: queries.status || undefined,
   } as IIssuesFilters;
 
   const data = await issueRepository.selectIssuesFromDb(filters);
+  return data;
+};
+
+export const getIssue = async (id: number) => {
+  const data = await issueRepository.selectIssueFromDb(id);
   return data;
 };
