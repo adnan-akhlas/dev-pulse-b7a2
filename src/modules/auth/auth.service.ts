@@ -27,7 +27,6 @@ export const loginUser = async ({
     throw createError(status.UNAUTHORIZED, "INVALID_CREDENTIALS");
   }
   const isValidPassword = await bcrypt.compare(password, user.password);
-  console.log(isValidPassword);
   if (!isValidPassword) {
     throw createError(status.UNAUTHORIZED, "INVALID_CREDENTIALS");
   }
