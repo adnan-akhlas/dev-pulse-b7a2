@@ -1,5 +1,6 @@
 import query from "../../config/db";
-import { TUserRegister, TUserResponse, IUser } from "./auth.types";
+import { IUser } from "../users/users.types";
+import { TUserRegister, TUserResponse } from "./auth.types";
 
 export const createUser = async (
   userInfo: TUserRegister,

@@ -1,12 +1,4 @@
-export interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  created_at: string;
-  updated_at: string;
-}
+import { IUser } from "../users/users.types";
 
 export type TUserRegister = Pick<IUser, "name" | "email" | "password" | "role">;
 
