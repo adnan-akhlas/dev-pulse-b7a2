@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import createError from "http-errors";
+import createHttpError from "http-errors";
 import status from "http-status";
 import env from "../../config/env";
 import { generateUserToken, hashPassword } from "../../utils/auth.util";
@@ -20,15 +20,15 @@ export const loginUser = async ({
   password,
 }: TUserLogin): Promise<{ user: TUserResponse; accessToken: string }> => {
   if (!email || !password) {
-    throw createError(status.BAD_REQUEST, "INVALID_CREDENTIALS");
+    throw createHttpError(status.BAD_REQUEST, "INVALID_CREDENTIALS");
   }
-  const user = await authRepository.findUserByEmail(email);
+  const user = await authRepository.findUserByEmailForLogin(email);
   if (!user) {
-    throw createError(status.UNAUTHORIZED, "INVALID_CREDENTIALS");
+    throw createHttpError(status.UNAUTHORIZED, "INVALID_CREDENTIALS");
   }
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword) {
-    throw createError(status.UNAUTHORIZED, "INVALID_CREDENTIALS");
+    throw createHttpError(status.UNAUTHORIZED, "INVALID_CREDENTIALS");
   }
   const { password: _, ...secureUser } = user;
   const accessToken = generateUserToken(
