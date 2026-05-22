@@ -17,3 +17,14 @@ export const createIssue = asyncHandler(async (req: Request, res: Response) => {
     data,
   });
 });
+
+export const getIssues = asyncHandler(async (req: Request, res: Response) => {
+  const query = req.query;
+  const data = await issueService.getIssues(query);
+  sendResponse(res, {
+    status: status.OK,
+    success: true,
+    message: "Issues retrieved successfully.",
+    data,
+  });
+});

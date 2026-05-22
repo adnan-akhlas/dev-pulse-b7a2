@@ -16,3 +16,15 @@ export type TIssueRegister = Pick<
   IIssue,
   "title" | "description" | "type" | "reporter_id"
 >;
+
+export interface IIssuesFilters {
+  sort: "newest" | "oldest";
+  type?: TIssuesType;
+  status?: TIssuesStatus;
+}
+
+export interface IIssuesQueries {
+  sort?: string;
+  type?: string;
+  status?: string;
+}
