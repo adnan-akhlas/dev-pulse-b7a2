@@ -28,3 +28,10 @@ export interface IIssuesQueries {
   type?: string;
   status?: string;
 }
+
+export interface IUpdateIssuePayload {
+  title?: string;
+  description?: string;
+  type?: TIssuesType;
+  status?: TIssuesStatus;
+}

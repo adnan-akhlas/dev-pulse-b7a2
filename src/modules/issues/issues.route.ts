@@ -12,6 +12,18 @@ issuesRouter.post(
 );
 
 issuesRouter.get("/", issueController.getIssues);
+
 issuesRouter.get("/:id", issueController.getIssue);
+issuesRouter.delete(
+  "/:id",
+  auth(UserRoles.CONTRIBUTOR, UserRoles.MAINTAINER),
+  issueController.deleteIssue,
+);
+
+issuesRouter.put(
+  "/:id",
+  auth(UserRoles.CONTRIBUTOR, UserRoles.MAINTAINER),
+  issueController.updateIssue,
+);
 
 export default issuesRouter;

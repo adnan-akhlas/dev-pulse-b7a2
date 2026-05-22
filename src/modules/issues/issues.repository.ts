@@ -1,6 +1,11 @@
 import createHttpError from "http-errors";
 import query from "../../config/db";
-import { IIssuesFilters, TIssueRegister } from "./issues.types";
+import {
+  IIssue,
+  IIssuesFilters,
+  IUpdateIssuePayload,
+  TIssueRegister,
+} from "./issues.types";
 import status from "http-status";
 
 export const insertIssueIntoDb = async (issueInfo: TIssueRegister) => {
@@ -100,4 +105,82 @@ export const selectIssueFromDb = async (id: number) => {
   const stitchedIssues = { ...issues, reporter: user };
 
   return stitchedIssues;
+};
+
+export const deleteIssueFromDb = async (
+  id: number,
+  reporterId: number,
+): Promise<number> => {
+  const sql = `
+      DELETE FROM issues WHERE id=$1 AND reporter_id=$2;
+    `;
+  const result = await query(sql, [id, reporterId]);
+  return result.rowCount ?? 0;
+};
+
+export const getIssueReporterId = async (
+  id: number,
+): Promise<number | null> => {
+  const sql = `
+    SELECT reporter_id FROM issues WHERE id = $1;
+  `;
+  const result = await query(sql, [id]);
+
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  return result.rows[0].reporter_id;
+};
+
+export const getIssueOwnershipAndStatus = async (
+  id: number,
+): Promise<{ reporter_id: number; status: string } | null> => {
+  const sql = `
+    SELECT reporter_id, status FROM issues WHERE id = $1;
+  `;
+  const result = await query(sql, [id]);
+
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  return result.rows[0];
+};
+
+export const updateIssueInDb = async (
+  id: number,
+  reporterId: number,
+  role: "maintainer" | "contributor",
+  payload: IUpdateIssuePayload,
+): Promise<{ updateCount: number; data: IIssue | null }> => {
+  const fields: string[] = [];
+  const values: string | number[] = [];
+
+  Object.entries(payload).forEach(([key, value]) => {
+    if (value !== undefined) {
+      values.push(value);
+      fields.push(`${key} = $${values.length}`);
+    }
+  });
+
+  if (fields.length === 0) return { updateCount: 0, data: null };
+
+  let sql = `UPDATE issues SET ${fields.join(", ")}, updated_at = NOW()`;
+
+  if (role === "maintainer") {
+    values.push(id);
+    sql += ` WHERE id = $${values.length}`;
+  } else {
+    values.push(id, reporterId);
+    const idPosition = `$${values.length - 1}`;
+    const reporterPosition = `$${values.length}`;
+
+    sql += ` WHERE id = ${idPosition} AND reporter_id = ${reporterPosition} AND status = 'open'`;
+  }
+
+  sql += ` RETURNING *;`;
+
+  const result = await query(sql, values);
+  return { updateCount: result.rowCount ?? 0, data: result.rows[0] ?? null };
 };

@@ -19,7 +19,7 @@ export const findUserByEmailForLogin = async (
   email: string,
 ): Promise<IUser | null> => {
   const sql = `
-      SELECT id, email, role FROM users WHERE email = $1;
+      SELECT * FROM users WHERE email = $1;
     `;
   const result = await query(sql, [email]);
   return result.rows[0] || null;
