@@ -9,8 +9,9 @@
     ]
   },
   "scripts": {
+    "start": "node ./dist/server.js",
     "dev": "tsx watch --clear-screen=false ./src/server.ts",
-    "build": "tsc",
+    "build": "tsup",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky"
@@ -47,6 +48,7 @@
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
+    "tsup": "^8.5.1",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.4"
