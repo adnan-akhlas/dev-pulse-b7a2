@@ -66,3 +66,4 @@ pnpm-debug.log*
 .turbo/
 .eslintcache
 .prettiercache
+.vercel
